@@ -1,17 +1,17 @@
 class SignupUser {
-  String username;
+  String userName;
   String email;
   String password;
 
   SignupUser({
-    required this.username,
+    required this.userName,
     required this.email,
     required this.password,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'username': username,
+      'userName': userName,
       'email': email,
       'password': password,
     };

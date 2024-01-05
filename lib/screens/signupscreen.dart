@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:deeply_us_project/models/signupmodel.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class signupuiscreen extends StatefulWidget {
   const signupuiscreen({super.key});
@@ -15,9 +17,9 @@ class _signupuiscreenState extends State<signupuiscreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _verifyPasswordController = TextEditingController();
 
-  void _saveData() {
+  Future<void> _saveData() async {
     // Extracting text from controllers
-    String username = _usernameController.text;
+    String userName = _usernameController.text;
     String email = _emailController.text;
     String password = _passwordController.text;
     String verifyPassword = _verifyPasswordController.text;
@@ -28,13 +30,36 @@ class _signupuiscreenState extends State<signupuiscreen> {
     }
     // Create a SignupUser object using the entered data
     SignupUser signupUser = SignupUser(
-      username: username,
+      userName: userName,
       email: email,
       password: password,
     );
     // Convert the SignupUser object to JSON
     Map<String, dynamic> userData = signupUser.toJson();
     print(userData);
+
+    // API endpoint to send the user data
+    final String apiUrl = 'https://b387-122-161-48-42.ngrok-free.app/auth/signup/internal';
+
+    // Send the data to the API
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(userData),
+      );
+
+      if (response.statusCode == 200) {
+        // Successfully signed up
+        print('User signup successful!');
+      } else {
+        // Handle the error
+        print('Failed to signup. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (error) {
+      print('Error during signup: $error');
+    }
   }
 
 

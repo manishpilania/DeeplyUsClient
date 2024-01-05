@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:deeply_us_project/models/signinmodel.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class signinscreenui extends StatefulWidget {
   const signinscreenui({super.key});
@@ -14,7 +16,7 @@ class _signinuiscreenState extends State<signinscreenui> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _saveData() {
+  Future<void> _saveData() async {
     // Create a User object using the entered data
     SignInUser signinuser = SignInUser(
       email: _emailController.text,
@@ -23,6 +25,27 @@ class _signinuiscreenState extends State<signinscreenui> {
     // Convert the User object to JSON
     Map<String, dynamic> userData = signinuser.toJson();
     print(userData);
+
+    const String SignInapiUrl = 'https://b387-122-161-48-42.ngrok-free.app/auth/signin/internal';
+
+    try {
+      final response = await http.post(
+        Uri.parse(SignInapiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(userData),
+      );
+
+      if (response.statusCode == 200) {
+        // Successfully signed up
+        print('User signIn successful!');
+      } else {
+        // Handle the error
+        print('Failed to signin. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (error) {
+      print('Error during signIn: $error');
+    }
   }
 
   @override
