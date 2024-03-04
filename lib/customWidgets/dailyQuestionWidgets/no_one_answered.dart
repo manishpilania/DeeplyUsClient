@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:slide_to_act/slide_to_act.dart';
 
 class layoutOne extends StatefulWidget {
   const layoutOne({super.key});
@@ -15,26 +14,28 @@ class _layoutOneState extends State<layoutOne> {
     //final GlobalKey<SlideActionState> _key = GlobalKey();
     double screenWidth = MediaQuery.of(context).size.height;
     double screenHeight = MediaQuery.of(context).size.width;
+    double layoutWidth = screenWidth*0.4;
+    double layoutHeight = screenHeight*0.75;
 
     return Material(
       child: Center(
         child: Container(
-          width: 316,
-          height: 300,
+          width: layoutWidth,
+          height: layoutHeight,
           decoration: BoxDecoration(
             color: const Color(0xFF3BC2B6),
             borderRadius: BorderRadius.circular(40),
             boxShadow: [
               BoxShadow(
-                offset: const Offset(30, 30),
+                offset: const Offset(2, 2),
                 blurRadius: 70.3,
                 spreadRadius: -22,
-                color: Colors.black.withOpacity(0.4),
+                color: Colors.black.withOpacity(0.1),
               ),
               BoxShadow(
-                offset: const Offset(-30, -30),
-                blurRadius: 100,
-                spreadRadius: 10,
+                offset: const Offset(-2, -2),
+                blurRadius: 10,
+                spreadRadius: 1,
                 color: const Color(0xFBFFFFE5).withOpacity(0.9),
               ),
             ],
@@ -57,12 +58,12 @@ class _layoutOneState extends State<layoutOne> {
               ),
               SizedBox(height: screenHeight*0.1,),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.fromLTRB(screenWidth*0.01 , 0 , screenWidth*0.01 , 0),
                 child: Text('What is one item on your partner\'s bucket list that they haven\'t mentioned to you yet?',
                   textAlign:  TextAlign.center,
                 style: GoogleFonts.poppins(
                   textStyle: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w500,
                     color: Colors.white
                   ),
@@ -75,11 +76,19 @@ class _layoutOneState extends State<layoutOne> {
                     onPressed: () {},
                     style: TextButton.styleFrom(),
                     child: Container(
-                      height: 56,
-                      width: 292,
+                      height: layoutHeight*0.2,
+                      width: layoutWidth*0.9,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(35),
-                        color:  Color(0xff37a0a0),
+                        color:  const Color(0xff37a0a0),
+                          boxShadow: [
+                            BoxShadow(
+                              offset:  const Offset(0, 4),
+                              blurRadius: 1.899999976158142,
+                              spreadRadius: 1,
+                              color: const Color(0x12000000).withOpacity(0.07), // The first two digits (12) represent the alpha (opacity)
+                            ),
+                          ]
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,

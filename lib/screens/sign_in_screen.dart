@@ -1,55 +1,31 @@
+import 'package:deeply_us_project/data/response/api_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:deeply_us_project/models/signinmodel.dart';
+import 'package:deeply_us_project/models/sign_in_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class signinscreenui extends StatefulWidget {
-  const signinscreenui({super.key});
+
+class SignInScreenUi extends StatefulWidget {
+  const SignInScreenUi({super.key});
 
   @override
-  State<signinscreenui> createState() => _signinuiscreenState();
+  State<SignInScreenUi> createState() => _SignInUiScreenState();
 }
 
-class _signinuiscreenState extends State<signinscreenui> {
+class _SignInUiScreenState extends State<SignInScreenUi> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _saveData() async {
-    // Create a User object using the entered data
-    SignInUser signinuser = SignInUser(
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
-    // Convert the User object to JSON
-    Map<String, dynamic> userData = signinuser.toJson();
-    print(userData);
 
-    const String SignInapiUrl = 'https://b387-122-161-48-42.ngrok-free.app/auth/signin/internal';
-
-    try {
-      final response = await http.post(
-        Uri.parse(SignInapiUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(userData),
-      );
-
-      if (response.statusCode == 200) {
-        // Successfully signed up
-        print('User signIn successful!');
-      } else {
-        // Handle the error
-        print('Failed to signin. Status code: ${response.statusCode}');
-        print('Response body: ${response.body}');
-      }
-    } catch (error) {
-      print('Error during signIn: $error');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context); // Initialize screen_util
     double screenWidth = MediaQuery.of(context).size.height;
     double screenHeight = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -59,9 +35,9 @@ class _signinuiscreenState extends State<signinscreenui> {
            Positioned(
              top: 0,
              left: 0,
-             child: Container(
-               height: 150,
-               width: 150,
+             child: SizedBox(
+               height: 1.sh,
+               width: 1.sw,
                child: Image.asset('assets/ringImageSignIn.png'),
              ),
            ),
@@ -83,14 +59,14 @@ class _signinuiscreenState extends State<signinscreenui> {
                padding: EdgeInsets.fromLTRB(0, screenHeight*0.2, 0, 0),
                child: Column(
                  children: [
-                   Container(
-                     height: screenHeight*0.5,
-                     width: screenWidth*0.5,
+                   SizedBox(
+                     height: 0.25.sh,
+                     width: 0.6.sw,
                      child: Image.asset(
                        'assets/deeplyUsLoginImage.png',
                      ),
                    ),
-                   SizedBox(height: screenHeight*0.05,),
+                   SizedBox(height: 0.02.sh,),
                    Container(
                      width: screenWidth,
                      color: Colors.transparent,
@@ -103,23 +79,23 @@ class _signinuiscreenState extends State<signinscreenui> {
                              )
                          ),
                          child: Padding(
-                           padding: EdgeInsets.fromLTRB(screenWidth*0.04, screenHeight*0.06, screenWidth*0.04, 0),
+                           padding: EdgeInsets.fromLTRB(screenWidth*0.04, 0.02.sh, screenWidth*0.04, 0),
                            child: Column(
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
-                               Text('Sign In' , style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),),
-                               SizedBox(height:screenHeight*0.06,),
-                               Text('Email id*' , style: GoogleFonts.poppins(fontSize: 14 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
-                               SizedBox(height:screenHeight*0.03,),
+                               Text( AppLocalizations.of(context)!.signInn, style: GoogleFonts.poppins(fontSize: 20.sp, fontWeight: FontWeight.w600),),
+                               SizedBox(height:0.01.sh,),
+                               Text('${AppLocalizations.of(context)!.clickHere}*' , style: GoogleFonts.poppins(fontSize: 14.sp , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
+                               SizedBox(height:0.01.sh,),
                                SizedBox(
-                                 height: screenHeight*0.1,
+                                 height: 0.06.sh,
                                  child: TextField(
                                    controller: _emailController,
                                    decoration: InputDecoration(
                                      hintText: 'email@email.com',
                                      hintStyle: GoogleFonts.poppins(
                                          fontWeight: FontWeight.w400,
-                                         fontSize: 14
+                                         fontSize: 14.sp
                                      ),
                                      border: OutlineInputBorder(
                                        borderRadius: BorderRadius.circular(10.0),
@@ -128,19 +104,19 @@ class _signinuiscreenState extends State<signinscreenui> {
                                    ),
                                  ),
                                ),
-                               SizedBox(height:screenHeight*0.06,),
-                               Text('Password*' , style: GoogleFonts.poppins(fontSize: 14 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
-                               SizedBox(height:screenHeight*0.03,),
+                               SizedBox(height:0.01.sh,),
+                               Text('${AppLocalizations.of(context)!.password}*' , style: GoogleFonts.poppins(fontSize: 14.sp , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
+                               SizedBox(height:0.01.sh,),
                                SizedBox(
-                                 height: screenHeight*0.1,
+                                 height: 0.06.sh,
                                  child: TextField(
                                    controller: _passwordController,
                                    obscureText: true,
                                    decoration: InputDecoration(
-                                     hintText: 'Enter Password',
+                                     hintText: AppLocalizations.of(context)!.enterPassword,
                                      hintStyle: GoogleFonts.poppins(
                                          fontWeight: FontWeight.w400,
-                                         fontSize: 14
+                                         fontSize: 14.sp
                                      ),
                                      border: OutlineInputBorder(
                                        borderRadius: BorderRadius.circular(10.0),
@@ -151,7 +127,7 @@ class _signinuiscreenState extends State<signinscreenui> {
                                  ),
                                ),
 
-                               SizedBox(height:screenHeight*0.06,),
+                               SizedBox(height:0.025.sh,),
                                SizedBox(
                                  width: screenWidth * 0.6,
                                  child: Row(
@@ -160,9 +136,9 @@ class _signinuiscreenState extends State<signinscreenui> {
                                        child: SizedBox(
                                          height: 44,
                                          child: ElevatedButton(
-                                           onPressed: _saveData,
+                                           onPressed: () => _saveData(_emailController, _passwordController),
                                            style: ElevatedButton.styleFrom(
-                                             primary: const Color(0xFF00B0A0),
+                                             backgroundColor: const Color(0xFF00B0A0),
                                              padding: const EdgeInsets.all(16.0),
                                              visualDensity: VisualDensity.compact,
                                              shape: RoundedRectangleBorder(
@@ -173,7 +149,7 @@ class _signinuiscreenState extends State<signinscreenui> {
                                              mainAxisAlignment: MainAxisAlignment.center,
                                              children: [
                                                Text(
-                                                 'SIGN IN',
+                                                 AppLocalizations.of(context)!.signIn,
                                                  textAlign: TextAlign.center,
                                                  style: GoogleFonts.poppins(fontSize: 16.0 , fontWeight: FontWeight.w600),
                                                ),
@@ -201,7 +177,7 @@ class _signinuiscreenState extends State<signinscreenui> {
                                    ],
                                  ),
                                ),
-                               SizedBox(height:screenHeight*0.06,),
+                               SizedBox(height:0.02.sh,),
                                Row(
                                  mainAxisAlignment: MainAxisAlignment.center,
                                  children: [
@@ -211,9 +187,9 @@ class _signinuiscreenState extends State<signinscreenui> {
                                      color: const Color(0xFF979797),
                                    ),
                                    SizedBox(width: screenWidth*0.02,),
-                                   const Text(
-                                     "OR",
-                                     style: TextStyle(color: Color(0xFF979797), fontSize: 12),
+                                   Text(
+                                     AppLocalizations.of(context)!.or,
+                                     style: const TextStyle(color: Color(0xFF979797), fontSize: 12),
                                    ),
                                    SizedBox(width: screenWidth*0.02,),
                                    Container(
@@ -223,7 +199,7 @@ class _signinuiscreenState extends State<signinscreenui> {
                                    ),
                                  ],
                                ),
-                               SizedBox(height:screenHeight*0.06,),
+                               SizedBox(height:0.02.sh,),
                                Center(
                                  child: Container(
                                    height: 50,
@@ -242,14 +218,14 @@ class _signinuiscreenState extends State<signinscreenui> {
                                    ),
                                  ),
                                ),
-                               SizedBox(height:screenHeight*0.03,),
+                               SizedBox(height:0.01.sh,),
                                Row(
                                  mainAxisAlignment: MainAxisAlignment.center,
                                  crossAxisAlignment: CrossAxisAlignment.center,
                                  children:[
-                                   Text('Don\'t have an account?' , style: GoogleFonts.poppins(fontSize: 16 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w600),),
+                                   Text('${AppLocalizations.of(context)!.dontHaveAnAccount}?', style: GoogleFonts.poppins(fontSize: 16 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w600),),
                                    SizedBox(width: screenWidth*0.01,),
-                                   Text('Sign up' , style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF00B0A0) ),)
+                                   Text(AppLocalizations.of(context)!.signUpp, style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF00B0A0) ),)
                                  ],
                                ),
                                Align(
@@ -272,5 +248,8 @@ class _signinuiscreenState extends State<signinscreenui> {
         ),
       )
     );
+  }
+  Future<void> _saveData(TextEditingController email, TextEditingController password) async {
+    await saveSignInData(email, password); // Call the function from api_service.dart
   }
 }

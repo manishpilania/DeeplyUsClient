@@ -1,46 +1,67 @@
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class GoogleSignInLogic extends StatefulWidget {
+  const GoogleSignInLogic({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<GoogleSignInLogic> createState() => _GoogleSignInLogicState();
 }
 
 
-class _LoginScreenState extends State<LoginScreen> {
+class _GoogleSignInLogicState extends State<GoogleSignInLogic> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Future<void> _handleSignIn() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      print(googleUser);
+
+      if(kDebugMode) {
+        print(googleUser);
+      }
+
       if (googleUser == null)
       {
-        print('User cancelled sign in');
+        if(kDebugMode) {
+          print('User cancelled sign in');
+        }
+
         return; // User canceled the sign-in
       }
 
       final GoogleSignInAuthentication googleAuth =
       await googleUser.authentication;
-      print(googleAuth);
+
+      if(kDebugMode) {
+        print(googleAuth);
+      }
+
       // Obtain the auth details
       final String? accessToken = googleAuth.accessToken;
       final String? idToken = googleAuth.idToken;
 
-      print(accessToken);
-      print(idToken);
+      if(kDebugMode) {
+        print(accessToken);
+      }
+
+      if(kDebugMode) {
+        print(idToken);
+      }
+
       // Send these tokens to your server for validation and session token generation
-      if(accessToken!= null && idToken!=null)
+      if(accessToken!= null && idToken!=null) {
         await sendTokensToServer(accessToken, idToken);
+      }
 
       // Handle successful sign-in, e.g., navigate to the main app screen
       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } catch (error) {
       // Handle sign-in errors appropriately
-      print('Sign-in failed: $error');
+      if(kDebugMode) {
+        print('Sign-in failed: $error');
+      }
     }
   }
 
@@ -59,14 +80,20 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         // Successfully sent tokens to the server
         // You can handle the server's response here
-        print('Tokens sent successfully');
+        if(kDebugMode) {
+          print('Tokens sent successfully');
+        }
       } else {
         // Handle server errors
-        print('Server error: ${response.statusCode}');
+        if(kDebugMode) {
+          print('Server error: ${response.statusCode}');
+        }
       }
     } catch (error) {
       // Handle network errors
-      print('Network error: $error');
+      if(kDebugMode) {
+        print('Network error: $error');
+      }
     }
   }
 

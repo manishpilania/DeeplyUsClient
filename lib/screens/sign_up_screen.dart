@@ -1,17 +1,20 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:deeply_us_project/models/signupmodel.dart';
+import 'package:deeply_us_project/models/sign_up_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class signupuiscreen extends StatefulWidget {
-  const signupuiscreen({super.key});
+
+class SignUpUiScreen extends StatefulWidget {
+  const SignUpUiScreen({super.key});
 
   @override
-  State<signupuiscreen> createState() => _signupuiscreenState();
+  State<SignUpUiScreen> createState() => _SignUpUiScreenState();
 }
 
-class _signupuiscreenState extends State<signupuiscreen> {
+class _SignUpUiScreenState extends State<SignUpUiScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -25,7 +28,9 @@ class _signupuiscreenState extends State<signupuiscreen> {
     String verifyPassword = _verifyPasswordController.text;
     // Basic password verification
     if (password != verifyPassword) {
-      print('Password and Verify Password do not match.');
+      if(kDebugMode) {
+        print('Password and Verify Password do not match.');
+      }
       return;
     }
     // Create a SignupUser object using the entered data
@@ -36,10 +41,13 @@ class _signupuiscreenState extends State<signupuiscreen> {
     );
     // Convert the SignupUser object to JSON
     Map<String, dynamic> userData = signupUser.toJson();
-    print(userData);
+
+    if(kDebugMode) {
+      print(userData);
+    }
 
     // API endpoint to send the user data
-    final String apiUrl = 'https://b387-122-161-48-42.ngrok-free.app/auth/signup/internal';
+    const String apiUrl = 'https://2b08-122-161-50-227.ngrok-free.app/auth/signup/internal';
 
     // Send the data to the API
     try {
@@ -51,14 +59,26 @@ class _signupuiscreenState extends State<signupuiscreen> {
 
       if (response.statusCode == 200) {
         // Successfully signed up
-        print('User signup successful!');
+        if(kDebugMode) {
+          print('User signup successful!');
+        }
+
       } else {
         // Handle the error
-        print('Failed to signup. Status code: ${response.statusCode}');
-        print('Response body: ${response.body}');
+        if(kDebugMode) {
+          print('Failed to signup. Status code: ${response.statusCode}');
+        }
+
+        if(kDebugMode) {
+          print('Response body: ${response.body}');
+        }
+
       }
     } catch (error) {
-      print('Error during signup: $error');
+
+      if(kDebugMode) {
+        print('Error during signup: $error');
+      }
     }
   }
 
@@ -114,16 +134,16 @@ class _signupuiscreenState extends State<signupuiscreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
 
                               children: [
-                                Text('Sign Up' , style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),),
+                                Text(AppLocalizations.of(context)!.signUp, style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),),
                                 SizedBox(height:screenHeight*0.04,),
-                                Text('User Name*' , style: GoogleFonts.poppins(fontSize: 14 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
+                                Text('${AppLocalizations.of(context)!.userName}*', style: GoogleFonts.poppins(fontSize: 14 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
                                 SizedBox(height:screenHeight*0.03,),
                                 SizedBox(
                                   height: 38,
                                   child: TextField(
                                     controller: _usernameController,
                                     decoration: InputDecoration(
-                                      hintText: 'User Name',
+                                      hintText: AppLocalizations.of(context)!.userName,
                                       hintStyle: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 14
@@ -137,7 +157,7 @@ class _signupuiscreenState extends State<signupuiscreen> {
                                   ),
                                 ),
                                 SizedBox(height:screenHeight*0.04,),
-                                Text('Email id*' , style: GoogleFonts.poppins(fontSize: 14 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
+                                Text('${AppLocalizations.of(context)!.emailId}*' , style: GoogleFonts.poppins(fontSize: 14 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
                                 SizedBox(height:screenHeight*0.03,),
                                 SizedBox(
                                   height: 38,
@@ -158,14 +178,14 @@ class _signupuiscreenState extends State<signupuiscreen> {
                                   ),
                                 ),
                                 SizedBox(height:screenHeight*0.04,),
-                                Text('Password*' , style: GoogleFonts.poppins(fontSize: 14 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
+                                Text('${AppLocalizations.of(context)!.password}*' , style: GoogleFonts.poppins(fontSize: 14 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
                                 SizedBox(height:screenHeight*0.03,),
                                 SizedBox(
                                   height: 38,
                                   child: TextField(
                                     controller: _passwordController,
                                     decoration: InputDecoration(
-                                      hintText: 'Enter Password',
+                                      hintText: '${AppLocalizations.of(context)!.enterPassword}*' ,
                                       hintStyle: GoogleFonts.poppins(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 14
@@ -179,14 +199,14 @@ class _signupuiscreenState extends State<signupuiscreen> {
                                   ),
                                 ),
                                 SizedBox(height:screenHeight*0.04,),
-                                Text('Verify Password*' , style: GoogleFonts.poppins(fontSize: 14 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
+                                Text('${AppLocalizations.of(context)!.verifyPassword}*' , style: GoogleFonts.poppins(fontSize: 14 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w500),),
                                 SizedBox(height:screenHeight*0.03,),
                                 SizedBox(
                                   height: 38,
                                   child: TextField(
                                     controller: _verifyPasswordController,
                                     decoration: InputDecoration(
-                                      hintText: 'Confirm Password',
+                                      hintText: '${AppLocalizations.of(context)!.confirmPassword}*',
                                       hintStyle: GoogleFonts.poppins(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 14
@@ -210,7 +230,7 @@ class _signupuiscreenState extends State<signupuiscreen> {
                                           child: ElevatedButton(
                                             onPressed: _saveData,
                                             style: ElevatedButton.styleFrom(
-                                              primary: const Color(0xFF00B0A0),
+                                              backgroundColor: const Color(0xFF00B0A0),
                                               padding: const EdgeInsets.all(16.0),
                                               visualDensity: VisualDensity.compact,
                                               shape: RoundedRectangleBorder(
@@ -220,10 +240,10 @@ class _signupuiscreenState extends State<signupuiscreen> {
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                const Text(
-                                                  'SIGN UP',
+                                                Text(
+                                                  AppLocalizations.of(context)!.signUp ,
                                                   textAlign: TextAlign.center,
-                                                  style: TextStyle(fontSize: 16.0),
+                                                  style: const TextStyle(fontSize: 16.0),
                                                 ),
                                                 SizedBox( width: screenWidth*0.01,),
                                                 Container(
@@ -254,9 +274,9 @@ class _signupuiscreenState extends State<signupuiscreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children:[
-                                    Text('Already have an account?' , style: GoogleFonts.poppins(fontSize: 16 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w600),),
+                                    Text('${AppLocalizations.of(context)!.alreadyHaveAnAccount}?' , style: GoogleFonts.poppins(fontSize: 16 , color: const Color(0xFF807A7A), fontWeight: FontWeight.w600),),
                                     SizedBox(width: screenWidth*0.01,),
-                                    Text('Login' , style: GoogleFonts.poppins(fontSize: 16, color: const Color(0xFF00B0A0), fontWeight: FontWeight.w600),)
+                                    Text(AppLocalizations.of(context)!.login, style: GoogleFonts.poppins(fontSize: 16, color: const Color(0xFF00B0A0), fontWeight: FontWeight.w600),)
                                   ],
                                 )
                               ],
@@ -268,7 +288,7 @@ class _signupuiscreenState extends State<signupuiscreen> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               height: 160,
               width: 160,
               child: Image.asset('assets/ringImageSignIn.png'),
@@ -278,4 +298,5 @@ class _signupuiscreenState extends State<signupuiscreen> {
       )
     );
   }
+
 }
